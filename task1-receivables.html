@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Task 1 - Receivables Audit</title>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Oswald:wght@500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#2980b9;--ink:#1a2a3a;--bg:#eef2f5;--paper:#fff;--border:#b0bec8}
+html,body{width:1389px;height:794px;overflow:hidden;background:var(--bg);font-family:'Segoe UI',sans-serif;color:var(--ink)}
+.shell{display:flex;flex-direction:column;height:794px;width:1389px}
+.header{background:var(--accent);color:white;padding:11px 28px;display:flex;align-items:center;gap:20px;flex-shrink:0}
+.header h1{font-family:'Oswald',sans-serif;font-size:1.2em;text-transform:uppercase;letter-spacing:.08em;font-weight:500;white-space:nowrap}
+.flow{font-size:11px;opacity:.9;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.fs{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:3px;padding:2px 8px;font-weight:600;white-space:nowrap}
+.fa{opacity:.7}
+.tab-nav{display:flex;gap:0;background:#d0dce8;border-bottom:3px solid var(--accent);flex-shrink:0}
+.tab-btn{background:transparent;border:none;border-right:1px solid #b8ccd8;padding:9px 22px;cursor:pointer;font-family:'Segoe UI',sans-serif;font-size:12.5px;font-weight:600;color:#4a6070;transition:background .15s;text-align:left;line-height:1.35}
+.tab-btn:hover:not(.active){background:#c0d0de}
+.tab-btn.active{background:var(--paper);color:var(--accent);border-bottom:3px solid var(--paper);margin-bottom:-3px}
+.tab-sub{display:block;font-size:10px;font-weight:normal;color:#7090a0;text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
+.tab-btn.active .tab-sub{color:#5090b8}
+.content{flex:1;overflow:hidden;position:relative;background:var(--paper)}
+.doc-view{display:none;position:absolute;inset:0;padding:24px 36px;overflow-y:auto}
+.doc-view.active{display:block}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:3px;margin-bottom:12px}
+.badge-bope{background:#d5e8d4;color:#2d6a2d;border:1px solid #82b366}
+.badge-sub{background:#dae8fc;color:#1a4a7a;border:1px solid #6c8ebf}
+.badge-ctrl{background:#f8e8ff;color:#5a1a7a;border:1px solid #a67ab0}
+.doc-title{text-align:center;font-family:'Oswald',sans-serif;font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid var(--ink);padding-bottom:5px;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-family:'Courier Prime',monospace;font-size:13px;margin-bottom:16px}
+th{background:#f0f4f8;border:1px solid var(--border);padding:7px 12px;text-align:left;font-size:12px}
+td{border:1px solid #d8e0e8;padding:6px 12px}
+.num{text-align:right;width:120px}
+.total-row{font-weight:bold;border-top:2px solid var(--ink);border-bottom:4px double var(--ink);background:#f8f9fa}
+.acc-h{background:#34495e;color:white;padding:4px 12px;font-size:12px;margin-top:16px;margin-bottom:0;display:block}
+.footnote{font-size:11px;color:#607080;margin-top:-8px;margin-bottom:10px;font-style:italic}
+.recon-panel{background:#e8f4fd;border:1px solid #a8c8e8;border-radius:6px;padding:12px 18px;font-size:12.5px;color:#1a4a7a;margin-top:8px}
+.recon-panel strong{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="header">
+    <h1>Task 1 &mdash; Receivables Audit (Sales)</h1>
+    <div class="flow">
+      <span class="fs">Book of Prime Entry</span><span class="fa">&rarr;</span>
+      <span class="fs">Sales Ledger</span><span class="fa">+</span>
+      <span class="fs">Control Account</span><span class="fa">&rarr;</span>
+      <span class="fs">Trial Balance</span>
+    </div>
+  </div>
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab(this,'t1-sdb')">Sales Day Book<span class="tab-sub">Book of Prime Entry</span></button>
+    <button class="tab-btn" onclick="switchTab(this,'t1-ledger')">Sales Ledger<span class="tab-sub">Sales Ledger</span></button>
+    <button class="tab-btn" onclick="switchTab(this,'t1-list')">List of Balances<span class="tab-sub">Sales Ledger</span></button>
+    <button class="tab-btn" onclick="switchTab(this,'t1-ctrl')">Receivables Control Account<span class="tab-sub">General Ledger / Control Account</span></button>
+  </div>
+  <div class="content">
+
+    <div id="t1-sdb" class="doc-view active">
+      <span class="badge badge-bope">Book of Prime Entry &mdash; Sales Day Book</span>
+      <div class="doc-title">Sales Day Book (SDB1) &mdash; March 2026</div>
+      <table>
+        <tr><th>Date</th><th>Customer</th><th>Ref</th><th class="num">Total (&pound;)</th></tr>
+        <tr><td>04 Mar</td><td>A. Weaver</td><td>INV-901</td><td class="num">450.00</td></tr>
+        <tr><td>12 Mar</td><td>B. Thorne</td><td>INV-902</td><td class="num">820.00</td></tr>
+        <tr><td>18 Mar</td><td>C. Stone</td><td>INV-903</td><td class="num">310.00</td></tr>
+        <tr class="total-row"><td>Total posted to Control Account</td><td colspan="2"></td><td class="num">1,580.00</td></tr>
+      </table>
+      <p class="footnote">Each line is also posted individually to the customer's account in the Sales Ledger.</p>
+    </div>
+
+    <div id="t1-ledger" class="doc-view">
+      <span class="badge badge-sub">Sales Ledger &mdash; Individual Customer Accounts</span>
+      <div class="doc-title">Sales Ledger &mdash; Customer Account Extracts</div>
+      <span class="acc-h">B. Thorne (TH002)</span>
+      <table>
+        <tr><th>Date</th><th>Details</th><th class="num">Debit (&pound;)</th><th class="num">Credit (&pound;)</th><th class="num">Balance (&pound;)</th></tr>
+        <tr><td>12 Mar</td><td>Sales INV-902</td><td class="num">280.00</td><td></td><td class="num">280.00 Dr</td></tr>
+      </table>
+      <span class="acc-h">A. Weaver (WE001)</span>
+      <table>
+        <tr><th>Date</th><th>Details</th><th class="num">Debit (&pound;)</th><th class="num">Credit (&pound;)</th><th class="num">Balance (&pound;)</th></tr>
+        <tr><td>01 Mar</td><td>Balance b/d</td><td></td><td></td><td class="num">100.00 Dr</td></tr>
+        <tr><td>04 Mar</td><td>Sales INV-901</td><td class="num">450.00</td><td></td><td class="num">550.00 Dr</td></tr>
+      </table>
+      <span class="acc-h">C. Stone (ST003)</span>
+      <table>
+        <tr><th>Date</th><th>Details</th><th class="num">Debit (&pound;)</th><th class="num">Credit (&pound;)</th><th class="num">Balance (&pound;)</th></tr>
+        <tr><td>18 Mar</td><td>Sales INV-903</td><td class="num">310.00</td><td></td><td class="num">310.00 Dr</td></tr>
+      </table>
+    </div>
+
+    <div id="t1-list" class="doc-view">
+      <span class="badge badge-sub">Sales Ledger &mdash; List of Balances</span>
+      <div class="doc-title">List of Sales Ledger Balances &mdash; 31 March 2026</div>
+      <table>
+        <tr><th>Customer</th><th class="num">Balance (&pound;)</th></tr>
+        <tr><td>A. Weaver</td><td class="num">550.00</td></tr>
+        <tr><td>B. Thorne</td><td class="num">280.00</td></tr>
+        <tr><td>C. Stone</td><td class="num">310.00</td></tr>
+        <tr class="total-row"><td>Total of Sales Ledger Balances</td><td class="num">1,140.00</td></tr>
+      </table>
+      <p class="footnote">This total should agree to the closing balance on the Receivables Control Account.</p>
+    </div>
+
+    <div id="t1-ctrl" class="doc-view">
+      <span class="badge badge-ctrl">General Ledger &mdash; Receivables Control Account (GL 1100)</span>
+      <div class="doc-title">Receivables Control Account (GL 1100)</div>
+      <table>
+        <tr><th colspan="2">Debit (&pound;)</th><th colspan="2">Credit (&pound;)</th></tr>
+        <tr><td>01 Mar: Balance b/d</td><td class="num">100.00</td><td>31 Mar: Balance c/d</td><td class="num">1,680.00</td></tr>
+        <tr><td>31 Mar: Sales Day Book (SDB1)</td><td class="num">1,580.00</td><td></td><td></td></tr>
+        <tr class="total-row"><td>Total</td><td class="num">1,680.00</td><td>Total</td><td class="num">1,680.00</td></tr>
+        <tr><td>01 Apr: Balance b/d</td><td class="num">1,680.00</td><td></td><td></td></tr>
+      </table>
+      <div class="recon-panel">
+        <strong>Reconciliation:</strong> Compare the closing balance on this Control Account against the total on the List of Sales Ledger Balances. Do they agree?
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+function switchTab(btn,id){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.doc-view').forEach(v=>v.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
