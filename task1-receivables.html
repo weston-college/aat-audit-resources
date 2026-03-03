@@ -2,125 +2,295 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Task 1 - Receivables Audit</title>
-<link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Oswald:wght@500&display=swap" rel="stylesheet">
+<title>Greenwave Accounts - Receivables Audit</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--accent:#2980b9;--ink:#1a2a3a;--bg:#eef2f5;--paper:#fff;--border:#b0bec8}
-html,body{width:1389px;height:794px;overflow:hidden;background:var(--bg);font-family:'Segoe UI',sans-serif;color:var(--ink)}
-.shell{display:flex;flex-direction:column;height:794px;width:1389px}
-.header{background:var(--accent);color:white;padding:11px 28px;display:flex;align-items:center;gap:20px;flex-shrink:0}
-.header h1{font-family:'Oswald',sans-serif;font-size:1.2em;text-transform:uppercase;letter-spacing:.08em;font-weight:500;white-space:nowrap}
-.flow{font-size:11px;opacity:.9;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.fs{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:3px;padding:2px 8px;font-weight:600;white-space:nowrap}
-.fa{opacity:.7}
-.tab-nav{display:flex;gap:0;background:#d0dce8;border-bottom:3px solid var(--accent);flex-shrink:0}
-.tab-btn{background:transparent;border:none;border-right:1px solid #b8ccd8;padding:9px 22px;cursor:pointer;font-family:'Segoe UI',sans-serif;font-size:12.5px;font-weight:600;color:#4a6070;transition:background .15s;text-align:left;line-height:1.35}
-.tab-btn:hover:not(.active){background:#c0d0de}
-.tab-btn.active{background:var(--paper);color:var(--accent);border-bottom:3px solid var(--paper);margin-bottom:-3px}
-.tab-sub{display:block;font-size:10px;font-weight:normal;color:#7090a0;text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
-.tab-btn.active .tab-sub{color:#5090b8}
-.content{flex:1;overflow:hidden;position:relative;background:var(--paper)}
-.doc-view{display:none;position:absolute;inset:0;padding:24px 36px;overflow-y:auto}
+:root{
+  --sage-green:#00b04f;--sage-dark:#007a36;--sage-light:#e8f5ee;
+  --sidebar-bg:#2c3e35;--sidebar-text:#b8d4c0;
+  --border:#d0d8d2;--ink:#1a2a1e;--muted:#6a7a6e;
+  --status-bg:#e8ede9;--panel-bg:#f8faf8;
+}
+html,body{width:1920px;height:1080px;overflow:hidden;font-family:'Source Sans 3',sans-serif;font-size:14px;background:#b0c0b8;color:var(--ink)}
+.window{width:1920px;height:1080px;display:flex;flex-direction:column;border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+
+/* ── TITLE BAR ───────────────────────── */
+.titlebar{height:38px;background:linear-gradient(180deg,#3d8a5c 0%,#2d6a4f 100%);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0;user-select:none}
+.titlebar-left{display:flex;align-items:center;gap:10px}
+.app-logo{width:22px;height:22px;background:white;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.app-logo svg{width:14px;height:14px}
+.titlebar-title{color:white;font-size:13px;font-weight:700;letter-spacing:.02em}
+.titlebar-sub{color:rgba(255,255,255,.55);font-size:12px;font-weight:400}
+.win-controls{display:flex;gap:0}
+.win-btn{width:46px;height:38px;border:none;background:transparent;color:rgba(255,255,255,.75);cursor:default;font-size:14px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.win-btn:hover{background:rgba(255,255,255,.15)}
+.win-btn.close:hover{background:#c0392b;color:white}
+
+/* ── MAIN LAYOUT ─────────────────────── */
+.main{flex:1;display:flex;overflow:hidden}
+
+/* ── SIDEBAR ─────────────────────────── */
+.sidebar{width:210px;background:var(--sidebar-bg);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-logo{padding:18px 16px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-logo-text{font-size:15px;font-weight:700;color:white;letter-spacing:.01em}
+.sidebar-logo-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.sidebar-section{padding:14px 0 4px}
+.sidebar-heading{padding:4px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3)}
+.sidebar-item{padding:9px 16px 9px 20px;font-size:13px;color:var(--sidebar-text);cursor:pointer;display:flex;align-items:center;gap:9px;border-left:3px solid transparent;transition:all .1s}
+.sidebar-item:hover{background:rgba(255,255,255,.06)}
+.sidebar-item.active{background:rgba(0,176,79,.2);color:white;border-left-color:var(--sage-green);font-weight:600}
+.sidebar-item .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.4;flex-shrink:0}
+.sidebar-item.active .dot{background:var(--sage-green);opacity:1}
+.sidebar-footer{margin-top:auto;padding:14px 16px;border-top:1px solid rgba(255,255,255,.08);font-size:11.5px;color:rgba(255,255,255,.3);line-height:1.6}
+
+/* ── CONTENT AREA ────────────────────── */
+.content-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#e4eae5}
+
+/* Breadcrumb */
+.breadcrumb{height:32px;background:#dce4de;border-bottom:1px solid #c4d0c8;display:flex;align-items:center;padding:0 20px;gap:7px;font-size:12px;color:var(--muted);flex-shrink:0}
+.bc-sep{color:#b0b8b2;font-size:11px}
+.bc-current{color:var(--ink);font-weight:700}
+
+/* Document panel */
+.doc-panel{flex:1;display:flex;flex-direction:column;margin:12px;background:white;border:1px solid var(--border);border-radius:5px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+
+/* Panel header */
+.panel-header{background:linear-gradient(180deg,#f2f6f3 0%,#eaf0eb 100%);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.panel-title{font-size:16px;font-weight:700;color:var(--ink)}
+.panel-meta{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--muted)}
+.badge-period{background:var(--sage-light);color:var(--sage-dark);border:1px solid #9cd4b0;border-radius:3px;padding:3px 10px;font-size:11.5px;font-weight:700}
+.badge-status{background:#fff8e8;color:#7a5200;border:1px solid #e8c880;border-radius:3px;padding:3px 10px;font-size:11.5px;font-weight:600}
+
+/* Flow strip */
+.flow-strip{background:#f2f8f4;border-bottom:1px solid #d4e8da;padding:8px 20px;display:flex;align-items:center;gap:7px;flex-shrink:0}
+.flow-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.flow-step{background:white;border:1px solid #b8d4c0;border-radius:3px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--ink)}
+.flow-arrow{color:#8aaa90;font-size:13px}
+.flow-plus{color:#8aaa90;font-weight:700;font-size:14px}
+
+/* Tab nav */
+.tab-nav{display:flex;background:#f2f6f3;border-bottom:2px solid var(--border);flex-shrink:0;padding:7px 12px 0;gap:3px}
+.tab-btn{background:transparent;border:1px solid transparent;border-bottom:none;padding:8px 20px 9px;cursor:pointer;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:600;color:var(--muted);border-radius:4px 4px 0 0;margin-bottom:-2px;text-align:left;line-height:1.3;transition:all .15s}
+.tab-btn:hover:not(.active){background:#e8f0ea;color:var(--ink)}
+.tab-btn.active{background:white;color:var(--sage-dark);border-color:var(--border);border-bottom-color:white;font-weight:700}
+.tab-sub{display:block;font-size:10px;font-weight:400;color:#9ab0a0;text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+.tab-btn.active .tab-sub{color:#6a9a74}
+
+/* Doc views */
+.doc-views{flex:1;overflow:hidden;position:relative;background:white}
+.doc-view{display:none;position:absolute;inset:0;padding:22px 32px;overflow-y:auto}
 .doc-view.active{display:block}
-.badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:3px;margin-bottom:12px}
-.badge-bope{background:#d5e8d4;color:#2d6a2d;border:1px solid #82b366}
-.badge-sub{background:#dae8fc;color:#1a4a7a;border:1px solid #6c8ebf}
-.badge-ctrl{background:#f8e8ff;color:#5a1a7a;border:1px solid #a67ab0}
-.doc-title{text-align:center;font-family:'Oswald',sans-serif;font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid var(--ink);padding-bottom:5px;margin-bottom:16px}
-table{width:100%;border-collapse:collapse;font-family:'Courier Prime',monospace;font-size:13px;margin-bottom:16px}
-th{background:#f0f4f8;border:1px solid var(--border);padding:7px 12px;text-align:left;font-size:12px}
-td{border:1px solid #d8e0e8;padding:6px 12px}
-.num{text-align:right;width:120px}
-.total-row{font-weight:bold;border-top:2px solid var(--ink);border-bottom:4px double var(--ink);background:#f8f9fa}
-.acc-h{background:#34495e;color:white;padding:4px 12px;font-size:12px;margin-top:16px;margin-bottom:0;display:block}
-.footnote{font-size:11px;color:#607080;margin-top:-8px;margin-bottom:10px;font-style:italic}
-.recon-panel{background:#e8f4fd;border:1px solid #a8c8e8;border-radius:6px;padding:12px 18px;font-size:12.5px;color:#1a4a7a;margin-top:8px}
-.recon-panel strong{color:var(--ink)}
+
+/* Record type badge */
+.rec-badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:3px;margin-bottom:12px}
+.rb-bope{background:#e8f5ee;color:#1a5a2a;border:1px solid #90c8a0}
+.rb-sub{background:#e8f0fc;color:#1a3a7a;border:1px solid #90b0e0}
+.rb-ctrl{background:#f0e8fc;color:#4a1a7a;border:1px solid #b890d8}
+
+/* Doc title */
+.doc-title{font-size:13.5px;font-weight:700;text-align:center;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--ink);padding-bottom:6px;margin-bottom:16px;color:var(--ink)}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+th{background:#f0f5f1;border:1px solid #c0d4c8;padding:8px 14px;text-align:left;font-size:12.5px;font-weight:700;color:#1a4a28}
+td{border:1px solid #d8e8dc;padding:7px 14px}
+.num{text-align:right;width:120px;font-variant-numeric:tabular-nums}
+.total-row{font-weight:700;border-top:2px solid var(--ink);border-bottom:3px double var(--ink);background:#f0f5f1}
+.acc-h{background:#2c3e35;color:white;padding:5px 14px;font-size:12.5px;font-weight:600;margin-top:16px;margin-bottom:0;display:block;letter-spacing:.02em}
+.footnote{font-size:11.5px;color:var(--muted);margin-top:-8px;margin-bottom:12px;font-style:italic;padding-left:2px}
+.recon-panel{background:#f2f8f4;border:1px solid #b0d8bc;border-left:4px solid var(--sage-green);border-radius:0 5px 5px 0;padding:12px 16px;font-size:13px;color:#1a4a28;margin-top:10px;line-height:1.5}
+
+/* Status bar */
+.statusbar{height:26px;background:#dce4de;border-top:1px solid #c4d0c8;display:flex;align-items:center;padding:0 20px;gap:24px;font-size:11.5px;color:var(--muted);flex-shrink:0}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--sage-green);display:inline-block;margin-right:5px}
 </style>
 </head>
 <body>
-<div class="shell">
-  <div class="header">
-    <h1>Task 1 &mdash; Receivables Audit (Sales)</h1>
-    <div class="flow">
-      <span class="fs">Book of Prime Entry</span><span class="fa">&rarr;</span>
-      <span class="fs">Sales Ledger</span><span class="fa">+</span>
-      <span class="fs">Control Account</span><span class="fa">&rarr;</span>
-      <span class="fs">Trial Balance</span>
+<div class="window">
+
+  <!-- Title bar -->
+  <div class="titlebar">
+    <div class="titlebar-left">
+      <div class="app-logo">
+        <svg viewBox="0 0 14 14" fill="none">
+          <rect width="14" height="14" rx="2" fill="#00b04f"/>
+          <path d="M3 7h8M7 3v8" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="titlebar-title">Sage 50 Accounts</span>
+      <span class="titlebar-sub">&nbsp;&mdash;&nbsp;Greenwave Ltd&nbsp;&mdash;&nbsp;March 2026</span>
+    </div>
+    <div class="win-controls">
+      <button class="win-btn" title="Minimise">&#8722;</button>
+      <button class="win-btn" title="Maximise">&#9633;</button>
+      <button class="win-btn close" title="Close">&#10005;</button>
     </div>
   </div>
-  <div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab(this,'t1-sdb')">Sales Day Book<span class="tab-sub">Book of Prime Entry</span></button>
-    <button class="tab-btn" onclick="switchTab(this,'t1-ledger')">Sales Ledger<span class="tab-sub">Sales Ledger</span></button>
-    <button class="tab-btn" onclick="switchTab(this,'t1-list')">List of Balances<span class="tab-sub">Sales Ledger</span></button>
-    <button class="tab-btn" onclick="switchTab(this,'t1-ctrl')">Receivables Control Account<span class="tab-sub">General Ledger / Control Account</span></button>
-  </div>
-  <div class="content">
 
-    <div id="t1-sdb" class="doc-view active">
-      <span class="badge badge-bope">Book of Prime Entry &mdash; Sales Day Book</span>
-      <div class="doc-title">Sales Day Book (SDB1) &mdash; March 2026</div>
-      <table>
-        <tr><th>Date</th><th>Customer</th><th>Ref</th><th class="num">Total (&pound;)</th></tr>
-        <tr><td>04 Mar</td><td>A. Weaver</td><td>INV-901</td><td class="num">450.00</td></tr>
-        <tr><td>12 Mar</td><td>B. Thorne</td><td>INV-902</td><td class="num">820.00</td></tr>
-        <tr><td>18 Mar</td><td>C. Stone</td><td>INV-903</td><td class="num">310.00</td></tr>
-        <tr class="total-row"><td>Total posted to Control Account</td><td colspan="2"></td><td class="num">1,580.00</td></tr>
-      </table>
-      <p class="footnote">Each line is also posted individually to the customer's account in the Sales Ledger.</p>
-    </div>
+  <!-- Main -->
+  <div class="main">
 
-    <div id="t1-ledger" class="doc-view">
-      <span class="badge badge-sub">Sales Ledger &mdash; Individual Customer Accounts</span>
-      <div class="doc-title">Sales Ledger &mdash; Customer Account Extracts</div>
-      <span class="acc-h">B. Thorne (TH002)</span>
-      <table>
-        <tr><th>Date</th><th>Details</th><th class="num">Debit (&pound;)</th><th class="num">Credit (&pound;)</th><th class="num">Balance (&pound;)</th></tr>
-        <tr><td>12 Mar</td><td>Sales INV-902</td><td class="num">280.00</td><td></td><td class="num">280.00 Dr</td></tr>
-      </table>
-      <span class="acc-h">A. Weaver (WE001)</span>
-      <table>
-        <tr><th>Date</th><th>Details</th><th class="num">Debit (&pound;)</th><th class="num">Credit (&pound;)</th><th class="num">Balance (&pound;)</th></tr>
-        <tr><td>01 Mar</td><td>Balance b/d</td><td></td><td></td><td class="num">100.00 Dr</td></tr>
-        <tr><td>04 Mar</td><td>Sales INV-901</td><td class="num">450.00</td><td></td><td class="num">550.00 Dr</td></tr>
-      </table>
-      <span class="acc-h">C. Stone (ST003)</span>
-      <table>
-        <tr><th>Date</th><th>Details</th><th class="num">Debit (&pound;)</th><th class="num">Credit (&pound;)</th><th class="num">Balance (&pound;)</th></tr>
-        <tr><td>18 Mar</td><td>Sales INV-903</td><td class="num">310.00</td><td></td><td class="num">310.00 Dr</td></tr>
-      </table>
-    </div>
-
-    <div id="t1-list" class="doc-view">
-      <span class="badge badge-sub">Sales Ledger &mdash; List of Balances</span>
-      <div class="doc-title">List of Sales Ledger Balances &mdash; 31 March 2026</div>
-      <table>
-        <tr><th>Customer</th><th class="num">Balance (&pound;)</th></tr>
-        <tr><td>A. Weaver</td><td class="num">550.00</td></tr>
-        <tr><td>B. Thorne</td><td class="num">280.00</td></tr>
-        <tr><td>C. Stone</td><td class="num">310.00</td></tr>
-        <tr class="total-row"><td>Total of Sales Ledger Balances</td><td class="num">1,140.00</td></tr>
-      </table>
-      <p class="footnote">This total should agree to the closing balance on the Receivables Control Account.</p>
-    </div>
-
-    <div id="t1-ctrl" class="doc-view">
-      <span class="badge badge-ctrl">General Ledger &mdash; Receivables Control Account (GL 1100)</span>
-      <div class="doc-title">Receivables Control Account (GL 1100)</div>
-      <table>
-        <tr><th colspan="2">Debit (&pound;)</th><th colspan="2">Credit (&pound;)</th></tr>
-        <tr><td>01 Mar: Balance b/d</td><td class="num">100.00</td><td>31 Mar: Balance c/d</td><td class="num">1,680.00</td></tr>
-        <tr><td>31 Mar: Sales Day Book (SDB1)</td><td class="num">1,580.00</td><td></td><td></td></tr>
-        <tr class="total-row"><td>Total</td><td class="num">1,680.00</td><td>Total</td><td class="num">1,680.00</td></tr>
-        <tr><td>01 Apr: Balance b/d</td><td class="num">1,680.00</td><td></td><td></td></tr>
-      </table>
-      <div class="recon-panel">
-        <strong>Reconciliation:</strong> Compare the closing balance on this Control Account against the total on the List of Sales Ledger Balances. Do they agree?
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-text">Greenwave Ltd</div>
+        <div class="sidebar-logo-sub">Financial Year 2025&ndash;26</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Customers</div>
+        <div class="sidebar-item active"><span class="dot"></span>Sales Ledger</div>
+        <div class="sidebar-item"><span class="dot"></span>Sales Day Book</div>
+        <div class="sidebar-item"><span class="dot"></span>Credit Control</div>
+        <div class="sidebar-item"><span class="dot"></span>Aged Debtors</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Suppliers</div>
+        <div class="sidebar-item"><span class="dot"></span>Purchase Ledger</div>
+        <div class="sidebar-item"><span class="dot"></span>Purchase Day Book</div>
+        <div class="sidebar-item"><span class="dot"></span>Aged Creditors</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Nominal</div>
+        <div class="sidebar-item"><span class="dot"></span>Chart of Accounts</div>
+        <div class="sidebar-item"><span class="dot"></span>Trial Balance</div>
+        <div class="sidebar-item"><span class="dot"></span>VAT Returns</div>
+      </div>
+      <div class="sidebar-footer">
+        Logged in as:<br>D. Armitage
       </div>
     </div>
 
+    <!-- Content -->
+    <div class="content-wrap">
+
+      <div class="breadcrumb">
+        <span>Customers</span>
+        <span class="bc-sep">&#8250;</span>
+        <span>Sales Ledger</span>
+        <span class="bc-sep">&#8250;</span>
+        <span class="bc-current">Receivables Audit &mdash; March 2026</span>
+      </div>
+
+      <div class="doc-panel">
+
+        <div class="panel-header">
+          <div class="panel-title">Receivables Audit (Sales) &mdash; Task 1</div>
+          <div class="panel-meta">
+            <span class="badge-period">March 2026</span>
+            <span>Account: GL 1100</span>
+            <span class="badge-status">Under Review</span>
+          </div>
+        </div>
+
+        <div class="flow-strip">
+          <span class="flow-label">Audit Trail</span>
+          <span class="flow-step">Book of Prime Entry</span>
+          <span class="flow-arrow">&#8594;</span>
+          <span class="flow-step">Sales Ledger</span>
+          <span class="flow-plus">&nbsp;+&nbsp;</span>
+          <span class="flow-step">Control Account</span>
+          <span class="flow-arrow">&#8594;</span>
+          <span class="flow-step">Trial Balance</span>
+        </div>
+
+        <div class="tab-nav">
+          <button class="tab-btn active" onclick="switchTab(this,'t1-sdb')">
+            Sales Day Book
+            <span class="tab-sub">Book of Prime Entry</span>
+          </button>
+          <button class="tab-btn" onclick="switchTab(this,'t1-ledger')">
+            Sales Ledger
+            <span class="tab-sub">Sales Ledger</span>
+          </button>
+          <button class="tab-btn" onclick="switchTab(this,'t1-list')">
+            List of Balances
+            <span class="tab-sub">Sales Ledger</span>
+          </button>
+          <button class="tab-btn" onclick="switchTab(this,'t1-ctrl')">
+            Receivables Control Account
+            <span class="tab-sub">General Ledger / Control Account</span>
+          </button>
+        </div>
+
+        <div class="doc-views">
+
+          <div id="t1-sdb" class="doc-view active">
+            <span class="rec-badge rb-bope">Book of Prime Entry &mdash; Sales Day Book</span>
+            <div class="doc-title">Sales Day Book (SDB1) &mdash; March 2026</div>
+            <table>
+              <tr><th>Date</th><th>Customer</th><th>Ref</th><th class="num">Total (&pound;)</th></tr>
+              <tr><td>04 Mar</td><td>A. Weaver</td><td>INV-901</td><td class="num">450.00</td></tr>
+              <tr><td>12 Mar</td><td>B. Thorne</td><td>INV-902</td><td class="num">820.00</td></tr>
+              <tr><td>18 Mar</td><td>C. Stone</td><td>INV-903</td><td class="num">310.00</td></tr>
+              <tr class="total-row"><td>Total posted to Control Account</td><td colspan="2"></td><td class="num">1,580.00</td></tr>
+            </table>
+            <p class="footnote">Each line is also posted individually to the customer's account in the Sales Ledger.</p>
+          </div>
+
+          <div id="t1-ledger" class="doc-view">
+            <span class="rec-badge rb-sub">Sales Ledger &mdash; Individual Customer Accounts</span>
+            <div class="doc-title">Sales Ledger &mdash; Customer Account Extracts</div>
+            <span class="acc-h">B. Thorne (TH002)</span>
+            <table>
+              <tr><th>Date</th><th>Details</th><th class="num">Debit (&pound;)</th><th class="num">Credit (&pound;)</th><th class="num">Balance (&pound;)</th></tr>
+              <tr><td>12 Mar</td><td>Sales INV-902</td><td class="num">280.00</td><td></td><td class="num">280.00 Dr</td></tr>
+            </table>
+            <span class="acc-h">A. Weaver (WE001)</span>
+            <table>
+              <tr><th>Date</th><th>Details</th><th class="num">Debit (&pound;)</th><th class="num">Credit (&pound;)</th><th class="num">Balance (&pound;)</th></tr>
+              <tr><td>01 Mar</td><td>Balance b/d</td><td></td><td></td><td class="num">100.00 Dr</td></tr>
+              <tr><td>04 Mar</td><td>Sales INV-901</td><td class="num">450.00</td><td></td><td class="num">550.00 Dr</td></tr>
+            </table>
+            <span class="acc-h">C. Stone (ST003)</span>
+            <table>
+              <tr><th>Date</th><th>Details</th><th class="num">Debit (&pound;)</th><th class="num">Credit (&pound;)</th><th class="num">Balance (&pound;)</th></tr>
+              <tr><td>18 Mar</td><td>Sales INV-903</td><td class="num">310.00</td><td></td><td class="num">310.00 Dr</td></tr>
+            </table>
+          </div>
+
+          <div id="t1-list" class="doc-view">
+            <span class="rec-badge rb-sub">Sales Ledger &mdash; List of Balances</span>
+            <div class="doc-title">List of Sales Ledger Balances &mdash; 31 March 2026</div>
+            <table>
+              <tr><th>Customer</th><th class="num">Balance (&pound;)</th></tr>
+              <tr><td>A. Weaver</td><td class="num">550.00</td></tr>
+              <tr><td>B. Thorne</td><td class="num">280.00</td></tr>
+              <tr><td>C. Stone</td><td class="num">310.00</td></tr>
+              <tr class="total-row"><td>Total of Sales Ledger Balances</td><td class="num">1,140.00</td></tr>
+            </table>
+            <p class="footnote">This total should agree to the closing balance on the Receivables Control Account.</p>
+          </div>
+
+          <div id="t1-ctrl" class="doc-view">
+            <span class="rec-badge rb-ctrl">General Ledger &mdash; Receivables Control Account (GL 1100)</span>
+            <div class="doc-title">Receivables Control Account (GL 1100)</div>
+            <table>
+              <tr><th colspan="2">Debit (&pound;)</th><th colspan="2">Credit (&pound;)</th></tr>
+              <tr><td>01 Mar: Balance b/d</td><td class="num">100.00</td><td>31 Mar: Balance c/d</td><td class="num">1,680.00</td></tr>
+              <tr><td>31 Mar: Sales Day Book (SDB1)</td><td class="num">1,580.00</td><td></td><td></td></tr>
+              <tr class="total-row"><td>Total</td><td class="num">1,680.00</td><td>Total</td><td class="num">1,680.00</td></tr>
+              <tr><td>01 Apr: Balance b/d</td><td class="num">1,680.00</td><td></td><td></td></tr>
+            </table>
+            <div class="recon-panel">
+              <strong>Reconciliation:</strong> Compare the closing balance on this Control Account against the total on the List of Sales Ledger Balances. Do they agree?
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Status bar -->
+  <div class="statusbar">
+    <span><span class="status-dot"></span>Connected</span>
+    <span>Greenwave Ltd</span>
+    <span>Period: March 2026</span>
+    <span>GL 1100 &mdash; Receivables Control</span>
+    <span style="margin-left:auto">Sage 50 Accounts v29.1</span>
+  </div>
+
 </div>
 <script>
 function switchTab(btn,id){
