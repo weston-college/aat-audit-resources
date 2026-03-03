@@ -10,7 +10,7 @@
   --sage-green:#00b04f;--sage-dark:#007a36;--sage-light:#e8f5ee;
   --sidebar-bg:#2c3e35;--sidebar-text:#b8d4c0;
   --border:#d0d8d2;--ink:#1a2a1e;--muted:#6a7a6e;
-  --status-bg:#e8ede9;--panel-bg:#f8faf8;
+  --status-bg:#e8ede9;
 }
 html,body{width:1920px;height:1080px;overflow:hidden;font-family:'Source Sans 3',sans-serif;font-size:14px;background:#b0c0b8;color:var(--ink)}
 .window{width:1920px;height:1080px;display:flex;flex-direction:column;border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
@@ -22,7 +22,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;font-family:'Source Sans 3'
 .app-logo svg{width:14px;height:14px}
 .titlebar-title{color:white;font-size:13px;font-weight:700;letter-spacing:.02em}
 .titlebar-sub{color:rgba(255,255,255,.55);font-size:12px;font-weight:400}
-.win-controls{display:flex;gap:0}
+.win-controls{display:flex}
 .win-btn{width:46px;height:38px;border:none;background:transparent;color:rgba(255,255,255,.75);cursor:default;font-size:14px;display:flex;align-items:center;justify-content:center;transition:background .15s}
 .win-btn:hover{background:rgba(255,255,255,.15)}
 .win-btn.close:hover{background:#c0392b;color:white}
@@ -31,17 +31,14 @@ html,body{width:1920px;height:1080px;overflow:hidden;font-family:'Source Sans 3'
 .main{flex:1;display:flex;overflow:hidden}
 
 /* ── SIDEBAR ─────────────────────────── */
-.sidebar{width:210px;background:var(--sidebar-bg);display:flex;flex-direction:column;flex-shrink:0}
-.sidebar-logo{padding:18px 16px 10px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar{width:200px;background:var(--sidebar-bg);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-logo{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
 .sidebar-logo-text{font-size:15px;font-weight:700;color:white;letter-spacing:.01em}
 .sidebar-logo-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
-.sidebar-section{padding:14px 0 4px}
+.sidebar-section{padding:18px 0 6px}
 .sidebar-heading{padding:4px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3)}
-.sidebar-item{padding:9px 16px 9px 20px;font-size:13px;color:var(--sidebar-text);cursor:pointer;display:flex;align-items:center;gap:9px;border-left:3px solid transparent;transition:all .1s}
-.sidebar-item:hover{background:rgba(255,255,255,.06)}
-.sidebar-item.active{background:rgba(0,176,79,.2);color:white;border-left-color:var(--sage-green);font-weight:600}
-.sidebar-item .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.4;flex-shrink:0}
-.sidebar-item.active .dot{background:var(--sage-green);opacity:1}
+.sidebar-item{padding:10px 16px 10px 20px;font-size:13px;color:white;display:flex;align-items:center;gap:9px;border-left:3px solid var(--sage-green);background:rgba(0,176,79,.2);font-weight:600}
+.sidebar-item .dot{width:7px;height:7px;border-radius:50%;background:var(--sage-green);flex-shrink:0}
 .sidebar-footer{margin-top:auto;padding:14px 16px;border-top:1px solid rgba(255,255,255,.08);font-size:11.5px;color:rgba(255,255,255,.3);line-height:1.6}
 
 /* ── CONTENT AREA ────────────────────── */
@@ -122,16 +119,16 @@ td{border:1px solid #d8e8dc;padding:7px 14px}
       <span class="titlebar-sub">&nbsp;&mdash;&nbsp;Greenwave Ltd&nbsp;&mdash;&nbsp;March 2026</span>
     </div>
     <div class="win-controls">
-      <button class="win-btn" title="Minimise">&#8722;</button>
-      <button class="win-btn" title="Maximise">&#9633;</button>
-      <button class="win-btn close" title="Close">&#10005;</button>
+      <button class="win-btn">&#8722;</button>
+      <button class="win-btn">&#9633;</button>
+      <button class="win-btn close">&#10005;</button>
     </div>
   </div>
 
   <!-- Main -->
   <div class="main">
 
-    <!-- Sidebar -->
+    <!-- Sidebar — active item only -->
     <div class="sidebar">
       <div class="sidebar-logo">
         <div class="sidebar-logo-text">Greenwave Ltd</div>
@@ -139,22 +136,9 @@ td{border:1px solid #d8e8dc;padding:7px 14px}
       </div>
       <div class="sidebar-section">
         <div class="sidebar-heading">Customers</div>
-        <div class="sidebar-item active"><span class="dot"></span>Sales Ledger</div>
-        <div class="sidebar-item"><span class="dot"></span>Sales Day Book</div>
-        <div class="sidebar-item"><span class="dot"></span>Credit Control</div>
-        <div class="sidebar-item"><span class="dot"></span>Aged Debtors</div>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Suppliers</div>
-        <div class="sidebar-item"><span class="dot"></span>Purchase Ledger</div>
-        <div class="sidebar-item"><span class="dot"></span>Purchase Day Book</div>
-        <div class="sidebar-item"><span class="dot"></span>Aged Creditors</div>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-heading">Nominal</div>
-        <div class="sidebar-item"><span class="dot"></span>Chart of Accounts</div>
-        <div class="sidebar-item"><span class="dot"></span>Trial Balance</div>
-        <div class="sidebar-item"><span class="dot"></span>VAT Returns</div>
+        <div class="sidebar-item">
+          <span class="dot"></span>Sales Ledger
+        </div>
       </div>
       <div class="sidebar-footer">
         Logged in as:<br>D. Armitage
